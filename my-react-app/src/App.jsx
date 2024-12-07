@@ -8,7 +8,7 @@ import UserGreeting from "./UserGreeting";
 function App() {
   return (
     <>
-      <ColorPicker></ColorPicker>
+      <MyComponent></MyComponent>
     </>
   );
 }
