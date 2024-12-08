@@ -1,90 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function MyComponent() {
-  const [todoList, setList] = useState([
-    "eat breakfast",
-    "take a shower",
-    "walk the dog",
-    "go to work",
-  ]);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
 
-  let newListItem = "";
+  useEffect(() => {
+    window.addEventListener(`resize`, handleResize);
 
-  function addTask() {
-    setList((l) => [...l, newListItem]);
-  }
+    return () => {
+      window.removeEventListener(`resize`, handleResize);
+    };
+  });
 
-  function handleListChange(event) {
-    newListItem = event.target.value;
-  }
-
-  function deleteTask(index) {
-    setList((l) => l.filter((_, i) => i !== index));
-  }
-
-  function moveTaskUp(index) {
-    if (index > 0) {
-      const updatedTasks = [...todoList];
-      [updatedTasks[index], updatedTasks[index - 1]] = [
-        updatedTasks[index - 1],
-        updatedTasks[index],
-      ];
-
-      setList(updatedTasks);
-    }
-  }
-
-  function moveTaskDown(index) {
-    if (index < todoList.length - 1) {
-      const updatedTasks = [...todoList];
-      [updatedTasks[index], updatedTasks[index + 1]] = [
-        updatedTasks[index + 1],
-        updatedTasks[index],
-      ];
-
-      setList(updatedTasks);
-    }
+  function handleResize() {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
   }
 
   return (
     <>
-      <div className="header-container">
-        <h1>To-Do-List</h1>
-
-        <input
-          type="text"
-          placeholder="Enter a task..."
-          onChange={handleListChange}
-        />
-
-        <button className="add-button" onClick={addTask}>
-          Add
-        </button>
-      </div>
-
-      <div className="list-container">
-        <ul>
-          {todoList.map((item, index) => (
-            <li key={index}>
-              <span className="list-item">{todoList[index]}</span>
-              <span className="list-buttons">
-                <button className="delete" onClick={() => deleteTask(index)}>
-                  DELETE
-                </button>
-                <button className="upVote" onClick={() => moveTaskUp(index)}>
-                  ☝🏽
-                </button>
-                <button
-                  className="downVote"
-                  onClick={() => moveTaskDown(index)}
-                >
-                  👇🏽
-                </button>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <p>window width: {width}px</p>
+      <p>window height: {height}px</p>
     </>
   );
 }
